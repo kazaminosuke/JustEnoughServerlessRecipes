@@ -1,0 +1,76 @@
+plugins {
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+	id 'maven-publish'
+}
+
+version = project.mod_version
+group = project.maven_group
+
+base {
+	archivesName = project.archives_base_name
+}
+
+repositories {
+	mavenCentral()
+	maven { url = "https://maven.fabricmc.net/" }
+	maven { url = "https://maven.blamejared.com/" } // JEI
+}
+
+tasks.named("jar") {
+	from(sourceSets.client.output)
+}
+
+loom {
+	splitEnvironmentSourceSets()
+
+	mods {
+		"justenoughserverlessrecipes" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	// Fabric API
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	// JEI
+	compileOnly "mezz.jei:jei-${minecraft_version}-fabric:${project.jei_version}"
+	runtimeOnly "mezz.jei:jei-${minecraft_version}-fabric:${project.jei_version}"
+}
+
+processResources {
+	inputs.property "version", project.version
+	inputs.property "jei_version_range", project.jei_version_range
+
+	filesMatching("fabric.mod.json") {
+		expand(
+				"version": inputs.properties.version,
+				"jei_version_range": inputs.properties.jei_version_range
+		)
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 25
+}
+
+java {
+	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
+}
+
+jar {
+	inputs.property "archivesName", project.base.archivesName
+
+	from("LICENSE") {
+		rename { "${it}_${inputs.properties.archivesName}"}
+	}
+}
