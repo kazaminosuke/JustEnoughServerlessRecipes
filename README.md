@@ -31,6 +31,7 @@ It currently:
 - supports the full bundled vanilla `26.1.1` recipe set
 - includes smithing transform and smithing trim recipes
 - uses the integrated server recipe manager automatically in singleplayer
+- ships separate Fabric and NeoForge builds
 
 ---
 
@@ -44,24 +45,26 @@ This keeps JEI usable without requiring JEI on the server.
 ---
 
 ## <span style="color:#8000ff;">Requirements</span>
-- [Fabric Loader](https://fabricmc.net/use/installer/)
-- [Fabric API](https://modrinth.com/mod/fabric-api)
-- [Just Enough Items (JEI) for Fabric](https://modrinth.com/mod/jei)
+- JEI is required on the client.
 
-JEI is required on the client.
+## <span style="color:#8000ff;">Compatibility</span>
 
-Supported JEI range:
-
-- `>=29.2.0 <30.0.0`
+- Fabric Loader `>=0.17.0`
+- Fabric API `>=0.140.3+26.1 <=0.145.4+26.1.1`
+- NeoForge `>=26.1.0.8-beta`
+- JEI `>=29.2.0.20`
+- Fabric: Minecraft `26.1` through `26.1.1`
+- NeoForge: Minecraft `26.1` through `26.1.1`
 
 ---
 
 ## <span style="color:#8000ff;">Installation</span>
-1. Install Fabric Loader.
-2. Install Fabric API.
-3. Install JEI on the client.
-4. Install `Just Enough Serverless Recipes` on the client.
-5. Launch the game and join a server without JEI installed server-side.
+1. Choose the matching `Fabric` or `NeoForge` build.
+2. Install the required loader for that build.
+3. For Fabric, also install Fabric API.
+4. Install the matching JEI build on the client.
+5. Install `Just Enough Serverless Recipes` on the client.
+6. Launch the game and join a server without JEI installed server-side.
 
 ---
 
@@ -70,17 +73,6 @@ Supported JEI range:
 - The server does not need to install this mod.
 - The server does not need to install JEI.
 - The player still needs JEI installed locally, because this mod extends JEI rather than replacing it.
-
----
-
-## <span style="color:#8000ff;">Compatibility</span>
-Designed for:
-
-- Minecraft `26.1`
-- Fabric Loader `0.18.5+`
-- JEI Fabric `29.x`
-
-If JEI changes its internal sync or startup behavior in a future major version, the supported JEI range should be updated alongside the mod.
 
 ---
 
