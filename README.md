@@ -31,7 +31,6 @@ It currently:
 - supports the full bundled vanilla `26.1.1` recipe set
 - includes smithing transform and smithing trim recipes
 - uses the integrated server recipe manager automatically in singleplayer
-- ships separate Fabric and NeoForge builds
 
 ---
 
