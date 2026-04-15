@@ -28,7 +28,7 @@ It currently:
 
 - restores vanilla recipe viewing on servers without server-side JEI
 - injects the fallback early enough to avoid JEI starting with an empty recipe sync
-- supports the full bundled vanilla `26.1.1` recipe set
+- supports the full bundled vanilla `26.1` recipe set
 - includes smithing transform and smithing trim recipes
 - uses the integrated server recipe manager automatically in singleplayer
 
@@ -49,11 +49,11 @@ This keeps JEI usable without requiring JEI on the server.
 ## <span style="color:#8000ff;">Compatibility</span>
 
 - Fabric Loader `>=0.17.0`
-- Fabric API `>=0.140.3+26.1 <=0.145.4+26.1.1`
-- NeoForge `>=26.1.0.8-beta`
+- Fabric API `>=0.140.3+26.1 <0.147.0`
+- NeoForge `>=26.1.0.8-beta <26.2`
 - JEI `>=29.2.0.20`
-- Fabric: Minecraft `26.1` through `26.1.1`
-- NeoForge: Minecraft `26.1` through `26.1.1`
+- Fabric: Minecraft `26.1` through `26.1.2`
+- NeoForge: Minecraft `26.1` through `26.1.2`
 
 ---
 
