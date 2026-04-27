@@ -11,6 +11,8 @@ that do <b>not</b> have JEI installed server-side.
 <br>
 It injects a synced fallback recipe map on the client so JEI can still display
 the full vanilla recipe set, including smithing recipes and armor trims.
+<br>
+It also lets JEI's existing recipe transfer button fill supported vanilla menus even when the server does not have JEI.
 </p>
 
 ---
@@ -27,6 +29,7 @@ This mod is for the common case where:
 It currently:
 
 - restores vanilla recipe viewing on servers without server-side JEI
+- restores JEI recipe transfer on supported vanilla menus without server-side JEI
 - injects the fallback early enough to avoid JEI starting with an empty recipe sync
 - supports the full bundled vanilla `26.1` recipe set
 - includes smithing transform and smithing trim recipes
@@ -37,6 +40,7 @@ It currently:
 ## <span style="color:#8000ff;">How It Works</span>
 - In singleplayer, the mod reads recipes from the integrated server directly.
 - In multiplayer, it injects a bundled vanilla fallback recipe dataset before JEI finishes starting.
+- For recipe transfer, it keeps JEI's existing button and swaps the backend to vanilla container clicks when JEI is missing server-side.
 - If a server already provides a proper synced recipe map, the mod stays out of the way.
 
 This keeps JEI usable without requiring JEI on the server.
