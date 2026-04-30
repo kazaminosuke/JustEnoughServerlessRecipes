@@ -12,6 +12,7 @@
     "sources": "https://github.com/DraconicVelum/JustEnoughServerlessRecipes",
     "issues": "https://github.com/DraconicVelum/JustEnoughServerlessRecipes/issues"
   },
+  "license": "The GNU General Public License (GPL-3.0)",
   "environment": "client",
   "entrypoints": {
     "client": [
