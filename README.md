@@ -53,7 +53,7 @@ This keeps JEI usable without requiring JEI on the server.
 ## <span style="color:#8000ff;">Compatibility</span>
 
 - Fabric Loader `>=0.17.0`
-- Fabric API `>=0.140.3+26.1 <0.147.0`
+- Fabric API `>=0.140.3+26.1`
 - NeoForge `>=26.1.0.8-beta <26.2`
 - JEI `>=29.2.0.20`
 - Fabric: Minecraft `26.1` through `26.1.2`
