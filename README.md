@@ -15,6 +15,8 @@ the full vanilla recipe set, including smithing recipes and armor trims.
 It also lets JEI's existing recipe transfer button fill supported vanilla menus even when the server does not have JEI.
 </p>
 
+<h2><strong><span style="color: rgb(255, 0, 0);">Spamming crafting recipes to craft multiple packs will send too many packets and may get you kicked from the server. !!!</span></strong></h2>
+
 ---
 
 ## <span style="color:#8000ff;">Description</span>
