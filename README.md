@@ -1,4 +1,4 @@
-# <p align="center"><span style="color:#8000ff;">Just Enough Serverless Recipes</span></p>
+<h1 align="center"><span style="color:#8000ff;">$\LARGE\color{green}{\textsf{Just Enough Serverless Recipes}}$</span></h1>
 <p align="center">
 <a href="https://github.com/DraconicVelum/JustEnoughServerlessRecipes/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/release/DraconicVelum/JustEnoughServerlessRecipes.svg?style=popout"></a>
 <a href="https://github.com/DraconicVelum/JustEnoughServerlessRecipes/releases"><img alt="Total downloads" src="https://img.shields.io/github/downloads/DraconicVelum/JustEnoughServerlessRecipes/total.svg?style=popout"></a>
@@ -21,7 +21,7 @@ $\LARGE\color{hsl(0,100%,50%)}{\textsf{and may get you kicked from the server. !
 
 ---
 
-## <span style="color:#8000ff;">Description</span>
+## <span style="color:#8000ff;">$\large\color{green}{\textsf{Description}}$</span>
 This mod is for the common case where:
 
 - the player has JEI installed on the client
@@ -41,7 +41,7 @@ It currently:
 
 ---
 
-## <span style="color:#8000ff;">How It Works</span>
+## <span style="color:#8000ff;">$\large\color{green}{\textsf{How It Works}}$</span>
 - In singleplayer, the mod reads recipes from the integrated server directly.
 - In multiplayer, it injects a bundled vanilla fallback recipe dataset before JEI finishes starting.
 - For recipe transfer, it keeps JEI's existing button and swaps the backend to vanilla container clicks when JEI is missing server-side.
@@ -51,10 +51,10 @@ This keeps JEI usable without requiring JEI on the server.
 
 ---
 
-## <span style="color:#8000ff;">Requirements</span>
+## <span style="color:#8000ff;">$\large\color{green}{\textsf{Requirements}}$</span>
 - JEI is required on the client.
 
-## <span style="color:#8000ff;">Compatibility</span>
+## <span style="color:#8000ff;">$\large\color{green}{\textsf{Compatibility}}$</span>
 
 - Fabric Loader `>=0.17.0`
 - Fabric API `>=0.140.3+26.1`
@@ -65,7 +65,7 @@ This keeps JEI usable without requiring JEI on the server.
 
 ---
 
-## <span style="color:#8000ff;">Installation</span>
+## <span style="color:#8000ff;">$\large\color{green}{\textsf{Installation}}$</span>
 1. Choose the matching `Fabric` or `NeoForge` build.
 2. Install the required loader for that build.
 3. For Fabric, also install Fabric API.
@@ -75,7 +75,7 @@ This keeps JEI usable without requiring JEI on the server.
 
 ---
 
-## <span style="color:#8000ff;">Notes</span>
+## <span style="color:#8000ff;">$\large\color{green}{\textsf{Notes}}$</span>
 - This is a client-side mod.
 - The server does not need to install this mod.
 - The server does not need to install JEI.
@@ -83,5 +83,5 @@ This keeps JEI usable without requiring JEI on the server.
 
 ---
 
-## <span style="color:#8000ff;">Licensing</span>
+## <span style="color:#8000ff;">$\large\color{green}{\textsf{Licensing}}$</span>
 Licensed under the [GPLv3.0](https://github.com/DraconicVelum/JustEnoughServerlessRecipes/blob/main/LICENSE).
