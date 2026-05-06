@@ -1,0 +1,4 @@
+[transfer]
+	#Minimum ticks between serverless recipe transfers (0 = unlimited, default: 1). Increase if the server kicks you for sending too many packets.
+	#Range: 0 ~ 200
+	cooldownTicks = 1

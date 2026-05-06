@@ -19,6 +19,7 @@ repositories {
 	mavenCentral()
 	maven { url = "https://maven.fabricmc.net/" }
 	maven { url = "https://maven.blamejared.com/" } // JEI
+	maven { url = "https://maven.night-config.com/releases" } // night-config
 }
 
 tasks.named("jar") {
@@ -52,6 +53,12 @@ dependencies {
 	// JEI
 	compileOnly "mezz.jei:jei-${project.jei_minecraft_version}-fabric:${project.jei_version}"
 	runtimeOnly "mezz.jei:jei-${project.jei_minecraft_version}-fabric:${project.jei_version}"
+
+	// night-config (TOML config)
+	implementation 'com.electronwill.night-config:toml:3.8.1'
+	implementation 'com.electronwill.night-config:core:3.8.1'
+	include 'com.electronwill.night-config:toml:3.8.1'
+	include 'com.electronwill.night-config:core:3.8.1'
 }
 
 processResources {
