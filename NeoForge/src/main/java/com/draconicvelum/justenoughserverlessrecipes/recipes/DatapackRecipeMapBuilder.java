@@ -85,13 +85,61 @@ public class DatapackRecipeMapBuilder {
             return integratedServerMap;
         }
 
+        RecipeMap clientConnectionMap = getClientConnectionRecipeMap();
+        if (clientConnectionMap != null) {
+            return clientConnectionMap;
+        }
+
         RecipeMap bundledMap = getBundledFallbackRecipeMap();
         if (bundledMap != null) {
             return bundledMap;
         }
 
-        JustEnoughServerlessRecipesLog.LOGGER.warn("No bundled fallback recipe dataset found");
+        JustEnoughServerlessRecipesLog.LOGGER.warn("No recipe source available");
         return RecipeMap.EMPTY;
+    }
+
+    private static RecipeMap getClientConnectionRecipeMap() {
+        try {
+            Class<?> minecraftClass = Class.forName("net.minecraft.client.Minecraft");
+            Object minecraft = minecraftClass.getMethod("getInstance").invoke(null);
+
+            boolean singleplayer = (boolean) minecraftClass.getMethod("hasSingleplayerServer").invoke(minecraft);
+            if (singleplayer) {
+                return null;
+            }
+
+            Object connection = minecraftClass.getMethod("getConnection").invoke(minecraft);
+            if (connection == null) {
+                return null;
+            }
+
+            Object recipeManager = connection.getClass().getMethod("getRecipeManager").invoke(connection);
+            if (recipeManager == null) {
+                return null;
+            }
+
+            Method getRecipes = recipeManager.getClass().getMethod("getRecipes");
+            @SuppressWarnings("unchecked")
+            Iterable<RecipeHolder<?>> recipes = (Iterable<RecipeHolder<?>>) getRecipes.invoke(recipeManager);
+
+            List<RecipeHolder<?>> holders = new ArrayList<>();
+            for (RecipeHolder<?> recipe : recipes) {
+                holders.add(recipe);
+            }
+
+            if (holders.isEmpty()) {
+                return null;
+            }
+
+            JustEnoughServerlessRecipesLog.LOGGER.info("Using client connection RecipeManager ({} recipes)", holders.size());
+            return RecipeMap.create(holders);
+        } catch (ClassNotFoundException ignored) {
+            return null;
+        } catch (Exception e) {
+            JustEnoughServerlessRecipesLog.LOGGER.debug("Could not get client connection recipes: {}", e.getMessage());
+            return null;
+        }
     }
 
     private static RecipeMap getBundledFallbackRecipeMap() {

@@ -1,0 +1,49 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "NeoForge - Client",
+      "presentation": {
+        "group": "Mod Development - NeoForge",
+        "order": 0
+      },
+      "projectName": "NeoForge",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\JustEnoughServerlessRecipes\\NeoForge\\build\\moddev\\clientRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\JustEnoughServerlessRecipes\\NeoForge\\build\\moddev\\clientRunVmArgs.txt",
+        "-Dfml.modFolders\u003djustenoughserverlessrecipes%%D:\\JustEnoughServerlessRecipes\\NeoForge\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\NeoForge\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    },
+    {
+      "type": "java",
+      "request": "launch",
+      "name": "NeoForge - Server",
+      "presentation": {
+        "group": "Mod Development - NeoForge",
+        "order": 1
+      },
+      "projectName": "NeoForge",
+      "mainClass": "net.neoforged.devlaunch.Main",
+      "args": [
+        "@D:\\JustEnoughServerlessRecipes\\NeoForge\\build\\moddev\\serverRunProgramArgs.txt"
+      ],
+      "vmArgs": [
+        "@D:\\JustEnoughServerlessRecipes\\NeoForge\\build\\moddev\\serverRunVmArgs.txt",
+        "-Dfml.modFolders\u003djustenoughserverlessrecipes%%D:\\JustEnoughServerlessRecipes\\NeoForge\\bin\\main"
+      ],
+      "cwd": "${workspaceFolder}\\NeoForge\\run",
+      "env": {},
+      "console": "internalConsole",
+      "shortenCommandLine": "none"
+    }
+  ]
+}

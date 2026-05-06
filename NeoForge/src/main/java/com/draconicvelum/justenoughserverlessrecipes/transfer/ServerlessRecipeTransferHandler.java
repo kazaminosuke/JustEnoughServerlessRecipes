@@ -120,6 +120,11 @@ public class ServerlessRecipeTransferHandler<C extends AbstractContainerMenu, R>
         }
 
         if (doTransfer) {
+            if (!TransferRateLimiter.getInstance().tryAcquire()) {
+                return handlerHelper.createUserErrorWithTooltip(
+                        Component.translatable("jesr.tooltip.transfer.rate_limited")
+                );
+            }
             boolean requireCompleteSets = transferInfo.requireCompleteSets(container, recipe);
             boolean transferred = VanillaMenuTransferExecutor.execute(
                     container,
