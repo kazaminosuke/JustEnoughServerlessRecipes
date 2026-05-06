@@ -1,5 +1,6 @@
 package com.draconicvelum.justenoughserverlessrecipes;
 
+import com.draconicvelum.justenoughserverlessrecipes.config.JESRConfig;
 import com.draconicvelum.justenoughserverlessrecipes.transfer.TransferRateLimiter;
 import mezz.jei.fabric.events.JeiLifecycleEvents;
 import net.fabricmc.api.ClientModInitializer;
@@ -11,6 +12,8 @@ public class JustEnoughServerlessRecipesMod implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        JESRConfig.load();
+
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) ->
                 TransferRateLimiter.getInstance().reset()
         );
