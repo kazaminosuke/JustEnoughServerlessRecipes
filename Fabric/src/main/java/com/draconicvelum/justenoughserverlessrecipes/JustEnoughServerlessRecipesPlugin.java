@@ -6,9 +6,11 @@ import com.draconicvelum.justenoughserverlessrecipes.transfer.ServerlessRecipeTr
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IRecipeRegistration;
 import mezz.jei.api.registration.IRecipeTransferRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.inventory.BlastFurnaceMenu;
@@ -20,12 +22,20 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.SmithingMenu;
 import net.minecraft.world.inventory.SmokerMenu;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @JeiPlugin
 public class JustEnoughServerlessRecipesPlugin implements IModPlugin {
-    public static IJeiRuntime runtime;
+    public static volatile IJeiRuntime runtime;
 
     @Override
     public Identifier getPluginUid() {
@@ -62,11 +72,34 @@ public class JustEnoughServerlessRecipesPlugin implements IModPlugin {
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         runtime = jeiRuntime;
         tryInjectDatapackRecipes("onRuntimeAvailable()");
+        ensureAllItemsRegistered(jeiRuntime);
     }
 
     @Override
     public void onRuntimeUnavailable() {
         runtime = null;
+    }
+
+    private static void ensureAllItemsRegistered(IJeiRuntime jeiRuntime) {
+        var manager = jeiRuntime.getIngredientManager();
+        Collection<ItemStack> existing = manager.getAllIngredients(VanillaTypes.ITEM_STACK);
+
+        Set<Item> existingItems = new HashSet<>();
+        for (ItemStack stack : existing) {
+            existingItems.add(stack.getItem());
+        }
+
+        List<ItemStack> toAdd = new ArrayList<>();
+        for (Item item : BuiltInRegistries.ITEM) {
+            if (!existingItems.contains(item)) {
+                toAdd.add(new ItemStack(item));
+            }
+        }
+
+        if (!toAdd.isEmpty()) {
+            manager.addIngredientsAtRuntime(VanillaTypes.ITEM_STACK, toAdd);
+            JustEnoughServerlessRecipesLog.LOGGER.info("Registered {} additional items with JEI", toAdd.size());
+        }
     }
 
     public static boolean tryInjectDatapackRecipes(String source) {

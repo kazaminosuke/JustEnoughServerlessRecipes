@@ -35,7 +35,7 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 
 @JeiPlugin
 public class JustEnoughServerlessRecipesPlugin implements IModPlugin {
-    public static IJeiRuntime runtime;
+    public static volatile IJeiRuntime runtime;
 
     @Override
     public Identifier getPluginUid() {

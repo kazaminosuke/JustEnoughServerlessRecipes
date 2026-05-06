@@ -1,5 +1,6 @@
 package com.draconicvelum.justenoughserverlessrecipes;
 
+import com.draconicvelum.justenoughserverlessrecipes.transfer.TransferRateLimiter;
 import mezz.jei.fabric.events.JeiLifecycleEvents;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -10,6 +11,10 @@ public class JustEnoughServerlessRecipesMod implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) ->
+                TransferRateLimiter.getInstance().reset()
+        );
+
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
             isSingleplayer = client.isSingleplayer();
 

@@ -1,5 +1,6 @@
 package com.draconicvelum.justenoughserverlessrecipes;
 
+import com.draconicvelum.justenoughserverlessrecipes.transfer.TransferRateLimiter;
 import net.minecraft.client.Minecraft;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
@@ -12,6 +13,7 @@ public final class JustEnoughServerlessRecipesNeoForgeClient {
 
     public static void init() {
         NeoForge.EVENT_BUS.addListener(ClientPlayerNetworkEvent.LoggingIn.class, JustEnoughServerlessRecipesNeoForgeClient::onLoggingIn);
+        NeoForge.EVENT_BUS.addListener(ClientPlayerNetworkEvent.LoggingOut.class, JustEnoughServerlessRecipesNeoForgeClient::onLoggingOut);
         NeoForge.EVENT_BUS.addListener(EventPriority.LOWEST, RecipesReceivedEvent.class, JustEnoughServerlessRecipesNeoForgeClient::onRecipesReceived);
     }
 
@@ -19,6 +21,10 @@ public final class JustEnoughServerlessRecipesNeoForgeClient {
         boolean singleplayer = Minecraft.getInstance().hasSingleplayerServer();
 
         JustEnoughServerlessRecipesLog.LOGGER.info("Mode: {}", singleplayer ? "Singleplayer" : "Multiplayer");
+    }
+
+    private static void onLoggingOut(ClientPlayerNetworkEvent.LoggingOut event) {
+        TransferRateLimiter.getInstance().reset();
     }
 
     private static void onRecipesReceived(RecipesReceivedEvent event) {

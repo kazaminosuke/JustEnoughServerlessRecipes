@@ -21,6 +21,21 @@ import java.util.List;
 import java.util.Map;
 
 final class VanillaMenuTransferExecutor {
+    private static final Method MINECRAFT_GET_INSTANCE;
+    private static final Field MINECRAFT_GAME_MODE;
+    // Cached per game-mode class; null until first click
+    private static volatile Method cachedHandleContainerInput;
+
+    static {
+        try {
+            Class<?> mc = Class.forName("net.minecraft.client.Minecraft");
+            MINECRAFT_GET_INSTANCE = mc.getMethod("getInstance");
+            MINECRAFT_GAME_MODE = mc.getField("gameMode");
+        } catch (ReflectiveOperationException e) {
+            throw new ExceptionInInitializerError(e);
+        }
+    }
+
     private VanillaMenuTransferExecutor() {
     }
 
@@ -215,22 +230,19 @@ final class VanillaMenuTransferExecutor {
 
     private static void click(int containerId, int slotNum, int buttonNum, ContainerInput input, Player player) {
         try {
-            Class<?> minecraftClass = Class.forName("net.minecraft.client.Minecraft");
-            Object minecraft = minecraftClass.getMethod("getInstance").invoke(null);
-            Field gameModeField = minecraftClass.getField("gameMode");
-            Object gameMode = gameModeField.get(minecraft);
+            Object minecraft = MINECRAFT_GET_INSTANCE.invoke(null);
+            Object gameMode = MINECRAFT_GAME_MODE.get(minecraft);
             if (gameMode == null) {
                 throw new IllegalStateException("Minecraft gameMode is null");
             }
-
-            Method handleContainerInput = gameMode.getClass().getMethod(
-                    "handleContainerInput",
-                    int.class,
-                    int.class,
-                    int.class,
-                    ContainerInput.class,
-                    Player.class
-            );
+            Method handleContainerInput = cachedHandleContainerInput;
+            if (handleContainerInput == null) {
+                handleContainerInput = gameMode.getClass().getMethod(
+                        "handleContainerInput",
+                        int.class, int.class, int.class, ContainerInput.class, Player.class
+                );
+                cachedHandleContainerInput = handleContainerInput;
+            }
             handleContainerInput.invoke(gameMode, containerId, slotNum, buttonNum, input, player);
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException("Failed to execute vanilla menu click", e);

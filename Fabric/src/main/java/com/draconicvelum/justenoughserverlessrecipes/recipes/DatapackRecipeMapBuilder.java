@@ -34,6 +34,8 @@ import java.util.stream.StreamSupport;
 
 public class DatapackRecipeMapBuilder {
     private static final String BUNDLED_RECIPE_PATH = "/data/justenoughserverlessrecipes/recipe_fallback/vanilla_recipes.json";
+    private static final Identifier TAG_TRIM_MATERIALS = Identifier.parse("minecraft:trim_materials");
+    private static final Identifier TAG_TRIMMABLE_ARMOR = Identifier.parse("minecraft:trimmable_armor");
     private static final List<String> TRIM_MATERIAL_ITEMS = List.of(
             "minecraft:amethyst_shard",
             "minecraft:copper_ingot",
@@ -85,13 +87,61 @@ public class DatapackRecipeMapBuilder {
             return integratedServerMap;
         }
 
+        RecipeMap clientConnectionMap = getClientConnectionRecipeMap();
+        if (clientConnectionMap != null) {
+            return clientConnectionMap;
+        }
+
         RecipeMap bundledMap = getBundledFallbackRecipeMap();
         if (bundledMap != null) {
             return bundledMap;
         }
 
-        JustEnoughServerlessRecipesLog.LOGGER.warn("No bundled fallback recipe dataset found");
+        JustEnoughServerlessRecipesLog.LOGGER.warn("No recipe source available");
         return RecipeMap.EMPTY;
+    }
+
+    private static RecipeMap getClientConnectionRecipeMap() {
+        try {
+            Class<?> minecraftClass = Class.forName("net.minecraft.client.Minecraft");
+            Object minecraft = minecraftClass.getMethod("getInstance").invoke(null);
+
+            boolean singleplayer = (boolean) minecraftClass.getMethod("hasSingleplayerServer").invoke(minecraft);
+            if (singleplayer) {
+                return null;
+            }
+
+            Object connection = minecraftClass.getMethod("getConnection").invoke(minecraft);
+            if (connection == null) {
+                return null;
+            }
+
+            Object recipeManager = connection.getClass().getMethod("getRecipeManager").invoke(connection);
+            if (recipeManager == null) {
+                return null;
+            }
+
+            Method getRecipes = recipeManager.getClass().getMethod("getRecipes");
+            @SuppressWarnings("unchecked")
+            Iterable<RecipeHolder<?>> recipes = (Iterable<RecipeHolder<?>>) getRecipes.invoke(recipeManager);
+
+            List<RecipeHolder<?>> holders = new ArrayList<>();
+            for (RecipeHolder<?> recipe : recipes) {
+                holders.add(recipe);
+            }
+
+            if (holders.isEmpty()) {
+                return null;
+            }
+
+            JustEnoughServerlessRecipesLog.LOGGER.info("Using client connection RecipeManager ({} recipes)", holders.size());
+            return RecipeMap.create(holders);
+        } catch (ClassNotFoundException ignored) {
+            return null;
+        } catch (Exception e) {
+            JustEnoughServerlessRecipesLog.LOGGER.debug("Could not get client connection recipes: {}", e.getMessage());
+            return null;
+        }
     }
 
     private static RecipeMap getBundledFallbackRecipeMap() {
@@ -181,10 +231,6 @@ public class DatapackRecipeMapBuilder {
                     Component.translatable("trim_pattern." + patternId.getNamespace() + "." + patternId.getPath()),
                     false
             ));
-            if (pattern == null) {
-                logTrimFailure(recipeId, "pattern holder is null", null);
-                return null;
-            }
 
             SmithingTrimRecipe recipe = new SmithingTrimRecipe(
                     new CommonInfo(getBoolean(json, "show_notification", true)),
@@ -249,10 +295,10 @@ public class DatapackRecipeMapBuilder {
     }
 
     private static Ingredient resolveKnownItemTag(Identifier tagId) {
-        if (tagId.equals(Identifier.parse("minecraft:trim_materials"))) {
+        if (tagId.equals(TAG_TRIM_MATERIALS)) {
             return ingredientFromItemIds(TRIM_MATERIAL_ITEMS);
         }
-        if (tagId.equals(Identifier.parse("minecraft:trimmable_armor"))) {
+        if (tagId.equals(TAG_TRIMMABLE_ARMOR)) {
             return ingredientFromItemIds(TRIMMABLE_ARMOR_ITEMS);
         }
         return null;
