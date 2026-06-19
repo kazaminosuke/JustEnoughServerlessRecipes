@@ -11,7 +11,7 @@ public class JustEnoughServerlessRecipesMod implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
-            isSingleplayer = client.isSingleplayer();
+            isSingleplayer = client.hasSingleplayerServer();
 
             JustEnoughServerlessRecipesLog.LOGGER.info("Mode: {}", isSingleplayer ? "Singleplayer" : "Multiplayer");
 
