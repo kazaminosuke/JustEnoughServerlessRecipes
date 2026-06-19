@@ -23,6 +23,6 @@ side="CLIENT"
 [[dependencies.justenoughserverlessrecipes]]
 modId="jei"
 type="required"
-versionRange="[29.2.0.20,)"
+versionRange="${jei_version_range}"
 ordering="NONE"
 side="CLIENT"
