@@ -5,10 +5,14 @@ plugins {
 }
 
 def archiveVersionWithMinecraft = "${project.minecraft_release_version}-${project.mod_version}"
-def toGradleLowerBoundRange = { value ->
-	"[${value.replace('>=', '').trim()},)"
+def toGradleRange = { value ->
+	def parts = value.trim().split('\\s+')
+	def lower = parts[0].replace('>=', '')
+	def upper = parts.length > 1 ? parts[1].replace('<', '') : null
+	upper == null ? "[${lower},)" : "[${lower},${upper})"
 }
-def neoforgeVersionRange = toGradleLowerBoundRange(project.neoforge_version_range)
+def neoforgeVersionRange = toGradleRange(project.neoforge_version_range)
+def jeiVersionRange = toGradleRange(project.jei_version_range)
 
 base {
 	archivesName = "${project.archives_base_name}-neoforge"
@@ -46,7 +50,7 @@ dependencies {
 
 processResources {
 	inputs.property "version", project.version
-	inputs.property "jei_version_range", project.jei_version_range
+	inputs.property "jei_version_range", jeiVersionRange
 	inputs.property "loader_version_range", "[11,)"
 	inputs.property "neoforge_version_range", neoforgeVersionRange
 
